@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hj.car.rent.dao.RentOrderMapper">
+    <resultMap id="BaseResultMap" type="com.hj.car.rent.entity.RentOrder">
+        <id column="order_id" jdbcType="INTEGER" property="orderId"/>
+        <id column="customer_id" jdbcType="INTEGER" property="customerId"/>
+        <id column="car_id" jdbcType="INTEGER" property="carId"/>
+        <result column="price" jdbcType="DOUBLE" property="price"/>
+        <result column="rent_flag" jdbcType="INTEGER" property="rentFlag"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="begin_date" jdbcType="TIMESTAMP" property="beginDate"/>
+        <result column="return_date" jdbcType="TIMESTAMP" property="returnDate"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        order_id, customer_id, car_id, price, rent_flag, create_time, begin_date, return_date
+    </sql>
+
+    <delete id="deleteByOrderId" parameterType="java.lang.Integer">
+        delete from tbl_car_rent
+        where order_id = #{orderId, jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.hj.car.rent.entity.RentOrder"
+            useGeneratedKeys="true" keyProperty="orderId">
+        insert into tbl_car_rent (customer_id, car_id, price, rent_flag, create_time, begin_date, return_date)
+        values (
+                #{customerId, jdbcType=INTEGER},
+                #{carId, jdbcType=INTEGER},
+                #{price, jdbcType=DOUBLE},
+                #{rentFlag, jdbcType=INTEGER},
+                #{createTime, jdbcType=TIMESTAMP},
+                #{beginDate, jdbcType=TIMESTAMP},
+                #{returnDate, jdbcType=TIMESTAMP})
+    </insert>
+
+    <select id="selectByOrderId" parameterType="java.lang.Integer"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tbl_car_rent
+        where order_id = #{orderId,jdbcType=INTEGER}
+    </select>
+
+    <select id="getMaxOrderId" resultType="java.lang.Integer">
+        select order_id
+        from tbl_car_rent
+        order by order_id desc
+    </select>
+
+    <update id="updateByOrderId"
+            parameterType="com.hj.car.rent.entity.RentOrder">
+    update tbl_car_rent
+    set price = #{price,jdbcType=DOUBLE},
+        rent_flag = #{rentFlag,jdbcType=DOUBLE},
+        create_time = #{createTime,jdbcType=INTEGER},
+        begin_date = #{createTime,jdbcType=INTEGER},
+        return_date = #{createTime,jdbcType=VARCHAR}
+    </update>
+
+    <select id="orders" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tbl_car_rent
+    </select>
+</mapper>

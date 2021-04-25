@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hj.car.rent.dao.CarMapper">
+    <resultMap id="BaseResultMap" type="com.hj.car.rent.entity.Car">
+        <id column="car_id" jdbcType="INTEGER" property="carId"/>
+        <result column="car_model" jdbcType="VARCHAR" property="carModel"/>
+        <result column="car_type" jdbcType="VARCHAR" property="carType"/>
+        <result column="price" jdbcType="DOUBLE" property="price"/>
+        <result column="rent_price" jdbcType="DOUBLE" property="rentPrice"/>
+        <result column="is_renting" jdbcType="INTEGER" property="isRenting"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="car_img" jdbcType="VARCHAR" property="carImg"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        car_id, car_model, car_type, price, rent_price, is_renting, description, car_img
+    </sql>
+
+    <delete id="deleteByCarId" parameterType="java.lang.Integer">
+        delete from tbl_car
+        where car_id = #{carId,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.hj.car.rent.entity.Car">
+        insert into tbl_car (car_id, car_model, car_type, price,
+            rent_price, is_renting, description, car_img)
+        values (#{carId,jdbcType=VARCHAR},
+                #{carModel,jdbcType=VARCHAR},
+                #{carType,jdbcType=INTEGER},
+                #{price,jdbcType=DOUBLE},
+                #{rentPrice,jdbcType=DOUBLE},
+                #{isRenting,jdbcType=INTEGER},
+                #{description,jdbcType=VARCHAR},
+                #{carImg,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateByCarId"
+            parameterType="com.hj.car.rent.entity.Car">
+        update tbl_car
+        set car_model = #{carModel,jdbcType=VARCHAR},
+            car_type = #{carType,jdbcType=INTEGER},
+            price = #{price,jdbcType=DOUBLE},
+            rent_price = #{rentPrice,jdbcType=DOUBLE},
+            is_renting = #{isRenting,jdbcType=INTEGER},
+            description = #{description,jdbcType=VARCHAR},
+            car_img = #{carImg,jdbcType=VARCHAR}
+        where car_id = #{carId,jdbcType=INTEGER}
+    </update>
+
+    <select id="selectByCarId" parameterType="java.lang.Integer"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tbl_car
+        where car_id = #{carId,jdbcType=INTEGER}
+    </select>
+
+    <select id="cars" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tbl_car
+    </select>
+</mapper>
